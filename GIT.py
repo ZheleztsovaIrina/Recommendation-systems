@@ -3,6 +3,8 @@ import requests
 import csv
 import copy
 import pandas as pd
+from numpy import genfromtxt
+
 
 ACCESS_USERNAME =input("Please enter your Github username: ")
 ACCESS_PWD = input("Please enter your account password: ")
@@ -119,20 +121,28 @@ def prior(res):
                 copy_res[j]=-1
         p-=1
     print(prior)
-    interest(res,prior)
+    return prior
 
 def interest(res,prior):
     interest_k=[0]*len(res)
     sum=0
     for i in range(0,len(res)):
         interest_k[i]=res[i]*prior[i]
-        sum+=interest_k
-    print(interest_k)
+        sum+=interest_k[i]
+    print(interest_k,sum)
 
+def interest_df(res,prior):
+    int_df=copy.deepcopy(res)
+    for i in range (1,len(res)):
+        for j in range (1, len(prior)+1):
+            int_df[i][j]=float(res[i][j])*prior[j-1]
+    print(int_df)
 filename="data4.csv"
-X=pd.read_csv(filename)
-#print(X)
-prior(res_login)
+df=pd.read_csv(filename, sep=',',header=None)
+df=df.values
+prior_k=prior(res_login)
+interest_k=interest(res_login,prior_k)
+interest_k_df=interest_df(df,prior_k)
 
 
 
