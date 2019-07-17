@@ -3,7 +3,9 @@ import requests
 import csv
 import copy
 import pandas as pd
+import numpy as np
 from numpy import genfromtxt
+import webbrowser
 
 
 ACCESS_USERNAME =input("Please enter your Github username: ")
@@ -13,7 +15,6 @@ user = client.get_user(ACCESS_USERNAME)
 if user.public_repos == 0:
     print("You don't have public repositories.")
 repo_list = [repo.name for repo in user.get_repos() if not repo.fork]
-print(repo_list)
 python = 0
 cplusplus = 0
 javascript = 0
@@ -77,7 +78,6 @@ for j in repo_list:
     elif lang == "Shell":
         shell += 1
         sum += 1
-    print(j,':',lang)
 res_login=[]
 if (sum > 0):
     res_login.append(python / sum)
@@ -105,13 +105,12 @@ else:
     res_login.append(cs)
     res_login.append(php)
     res_login.append(shell)
-print(res_login)
+
 
 def prior(res):
     res_log=copy.deepcopy(res)
     copy_res=copy.deepcopy(res)
     prior=[0]*len(copy_res)
-    print(prior,copy_res,res_log)
     p=15
     for i in range (0,len(copy_res)):
         imax=copy_res.index(max(copy_res))
@@ -120,7 +119,6 @@ def prior(res):
                 prior[j]=p
                 copy_res[j]=-1
         p-=1
-    print(prior)
     return prior
 
 def interest(res,prior):
@@ -129,21 +127,47 @@ def interest(res,prior):
     for i in range(0,len(res)):
         interest_k[i]=res[i]*prior[i]
         sum+=interest_k[i]
-    print(interest_k,sum)
+    return(interest_k,sum)
 
 def interest_df(res,prior):
     int_df=copy.deepcopy(res)
+    sum_df = []
     for i in range (1,len(res)):
+        sum=0
         for j in range (1, len(prior)+1):
             int_df[i][j]=float(res[i][j])*prior[j-1]
-    print(int_df)
-filename="data4.csv"
+            sum+=int_df[i][j]
+        sum_df.append(sum)
+    return(sum_df)
+
+def search(sum_df,res,sum):
+    sum_c=copy.deepcopy(sum_df)
+    index=[]
+    kol=0
+    for i in range (0,5):
+        for j in range (0,len(sum_df)):
+            idx = min(range(len(sum_c)), key=lambda p: abs(sum_c[p]-sum))
+            for t in range (0,len(sum_df)):
+                if (sum_c[t]==sum_df[idx] and kol<=5):
+                    kol+=1
+                    index.append(t+1)
+                    sum_c[t]=-100
+    return(index)
+
+def recommendation(index,res):
+    url=[]
+    for i in range (0,len(index)):
+        url.append("https://github.com/{0}".format(res[index[i]][0]))
+    print(url)
+
+filename="data5.csv"
 df=pd.read_csv(filename, sep=',',header=None)
 df=df.values
 prior_k=prior(res_login)
-interest_k=interest(res_login,prior_k)
-interest_k_df=interest_df(df,prior_k)
-
+interest_k,sum=interest(res_login,prior_k)
+sum_df=interest_df(df,prior_k)
+index=search(sum_df,interest_k,sum)
+recommendation(index,df)
 
 
 
