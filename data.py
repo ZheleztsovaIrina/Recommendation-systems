@@ -96,7 +96,7 @@ def get_repositories(get_users_d):
                 shell +=1
                 sum += 1
         if (sum>0):
-            res.append(url)
+            res.append(get_users_d[i])
             res.append(python/sum)
             res.append(javascript/sum)
             res.append(ruby/sum)
@@ -111,7 +111,7 @@ def get_repositories(get_users_d):
             res.append(shell/sum)
             result.append(res)
         else:
-            res.append(url)
+            res.append(get_users_d[i])
             res.append(python)
             res.append(javascript)
             res.append(ruby)
@@ -127,7 +127,7 @@ def get_repositories(get_users_d):
             result.append(res)
 
     print(len(result),result)
-    with open('data4.csv', 'w', newline='') as f:
+    with open('data5.csv', 'w', newline='') as f:
         w = csv.writer(f)
         w.writerow([g for g in headline])
         for i in range(0,len(result)):
