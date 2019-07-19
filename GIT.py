@@ -102,6 +102,7 @@ def login_git(login, password):
         res_login.append(cs)
         res_login.append(php)
         res_login.append(shell)
+    print(res_login)
     return(res_login)
 
 
