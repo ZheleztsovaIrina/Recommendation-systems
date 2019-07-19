@@ -1,1 +1,1 @@
-from views import recommend
+from .recommend import recommend_neighbours_by_login
