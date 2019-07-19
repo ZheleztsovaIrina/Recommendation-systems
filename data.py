@@ -10,7 +10,7 @@ def login():
     if user.public_repos == 0:
         print("You don't have public repositories.")
 
-    def get_users_set(self, count=60, since=20000000):
+    def get_users_set(self, count=60, since=10000000):
         users = self.get_users(since=since)
         users_result = []
         for user, _ in zip(users, range(count)):
@@ -127,7 +127,7 @@ def get_repositories(get_users_d):
             result.append(res)
 
     print(len(result),result)
-    with open('data5.csv', 'w', newline='') as f:
+    with open('data1.csv', 'w', newline='') as f:
         w = csv.writer(f)
         w.writerow([g for g in headline])
         for i in range(0,len(result)):

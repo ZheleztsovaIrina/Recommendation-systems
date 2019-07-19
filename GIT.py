@@ -2,9 +2,11 @@ from github import Github
 import copy
 import pandas as pd
 
-def login():
-    ACCESS_USERNAME =input("Please enter your Github username: ")
-    ACCESS_PWD = input("Please enter your account password: ")
+def login_git(login, password):
+    # ACCESS_USERNAME =input("Please enter your Github username: ")
+    # ACCESS_PWD = input("Please enter your account password: ")
+    ACCESS_USERNAME = login
+    ACCESS_PWD = password
     client = Github(ACCESS_USERNAME, ACCESS_PWD, per_page=100)
     user = client.get_user(ACCESS_USERNAME)
     if user.public_repos == 0:
@@ -156,15 +158,15 @@ def recommendation(index,res):
         url.append("https://github.com/{0}".format(res[index[i]][0]))
     print(url)
 
-res_login=login()
-filename="data5.csv"
-df=pd.read_csv(filename, sep=',',header=None)
-df=df.values
-prior_k=prior(res_login)
-interest_k,sum=interest(res_login,prior_k)
-sum_df=interest_df(df,prior_k)
-index=search(sum_df,interest_k,sum)
-recommendation(index,df)
+# res_login=login()
+# filename="data5.csv"
+# df=pd.read_csv(filename, sep=',',header=None)
+# df=df.values
+# prior_k=prior(res_login)
+# interest_k,sum=interest(res_login,prior_k)
+# sum_df=interest_df(df,prior_k)
+# index=search(sum_df,interest_k,sum)
+# recommendation(index,df)
 
 
 
