@@ -3,8 +3,6 @@ import copy
 import pandas as pd
 
 def login_git(login, password):
-    # ACCESS_USERNAME =input("Please enter your Github username: ")
-    # ACCESS_PWD = input("Please enter your account password: ")
     ACCESS_USERNAME = login
     ACCESS_PWD = password
     client = Github(ACCESS_USERNAME, ACCESS_PWD, per_page=100)
@@ -102,9 +100,15 @@ def login_git(login, password):
         res_login.append(cs)
         res_login.append(php)
         res_login.append(shell)
-    print(res_login)
-    return(res_login)
-
+    #print(res_login)
+    filename="data.csv"
+    df=pd.read_csv(filename, sep=',',header=None)
+    df=df.values
+    prior_k = prior(res_login)
+    interest_k, sum = interest(res_login, prior_k)
+    sum_df=interest_df(df,prior_k)
+    index=search(sum_df,interest_k,sum)
+    return(recommendation(index,df))
 
 def prior(res):
     res_log=copy.deepcopy(res)
@@ -118,7 +122,7 @@ def prior(res):
                 prior[j]=p
                 copy_res[j]=-1
         p-=1
-    return prior
+    return(prior)
 
 def interest(res,prior):
     interest_k=[0]*len(res)
@@ -157,17 +161,9 @@ def recommendation(index,res):
     url=[]
     for i in range (0,len(index)):
         url.append("https://github.com/{0}".format(res[index[i]][0]))
-    print(url)
+    #print(url)
+    return(url)
 
-# res_login=login()
-# filename="data5.csv"
-# df=pd.read_csv(filename, sep=',',header=None)
-# df=df.values
-# prior_k=prior(res_login)
-# interest_k,sum=interest(res_login,prior_k)
-# sum_df=interest_df(df,prior_k)
-# index=search(sum_df,interest_k,sum)
-# recommendation(index,df)
 
 
 

@@ -10,7 +10,7 @@ def login():
     if user.public_repos == 0:
         print("You don't have public repositories.")
 
-    def get_users_set(self, count=60, since=10000000):
+    def get_users_set(self, count=60, since=30000000):
         users = self.get_users(since=since)
         users_result = []
         for user, _ in zip(users, range(count)):
