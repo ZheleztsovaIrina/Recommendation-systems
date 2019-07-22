@@ -132,7 +132,7 @@ def get_repositories(get_users_d):
         w.writerow([g for g in headline])
         for i in range(0,len(result)):
             w.writerow((result[i]))
-        f.close()
+    f.close()
     return result
 
 login()
